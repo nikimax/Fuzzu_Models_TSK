@@ -14,33 +14,6 @@ def weight_mult(c, weights):
     return r
 
 
-def power_factors(X, deg):
-    X_power = []
-    for x in X:
-        x_power = x**deg
-        X_power.append(x_power)
-    return np.array(X_power)
-
-
-def normalise_x(X):
-    X_norm = []
-    for x in X.T:
-        min_idx = np.argmin(x)
-        x -= x[min_idx]
-        max_idx = np.argmax(x)
-        x = x/x[max_idx]
-        X_norm.append(x)
-    return np.array(X_norm).T
-
-
-def normalise_y(X):
-    min_idx = np.argmin(X)
-    X -= X[min_idx]
-    max_idx = np.argmax(X)
-    X = X/X[max_idx]
-    return X
-
-
 class TakagiSugeno:
     def __init__(self, cluster_n=2, lr=0.01, n_iters=1500):
         self.lr = lr
@@ -59,7 +32,7 @@ class TakagiSugeno:
         for combination in permutations(power_degree):
             X_polynom = []
             for c in combination:
-                X_power = power_factors(X, c)
+                X_power = X**c
                 X_polynom.append(X_power)
             self.model_estimation(X_polynom, y, cluster_w)
             y_pred = self.y_estimation(X_polynom, cluster_w, self.weights, self.bias)
@@ -103,23 +76,25 @@ class TakagiSugeno:
     def predict(self, X, cluster_w):
         X_polynom = []
         for c in self.combination_best:
-            X_power = power_factors(X, c)
+            X_power = X**c
             X_polynom.append(X_power)
         y_predicted = self.y_estimation(X_polynom, cluster_w, self.weights_best, self.bias_best)
         return y_predicted
 
 
 if __name__ == '__main__':
+    # Testing on sklearn data
     import matplotlib.pyplot as plt
     from sklearn import datasets
+    from Normalization import normalize_df, normalize_factor
 
     # Prepare data
     X_numpy, y_numpy = datasets.make_regression(n_samples=100, n_features=11, noise=20, random_state=1)
     # Normalisation
-    X_norm = np.array(normalise_x(X_numpy), dtype=np.float64)
-    y_norm = np.array(normalise_y(y_numpy), dtype=np.float64)
+    X_norm = np.array(normalize_df(X_numpy), dtype=np.float64)
+    y_norm = np.array(normalize_factor(y_numpy), dtype=np.float64)
     # Create y
-    y_sq = power_factors(y_norm, 2)
+    y_sq = y_norm**2
     y = y_norm * 0.6 + y_sq * 0.4
     # Create membership matrix
     membership = np.zeros((len(X_norm), 2))

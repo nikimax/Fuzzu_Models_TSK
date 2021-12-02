@@ -89,6 +89,7 @@ def accuracy(y_true, membership):
 
 
 if __name__ == "__main__":
+    # Testing on sklearn data
     from sklearn.datasets import make_blobs
 
     X, y = make_blobs(centers=3, n_samples=120, n_features=2, shuffle=True, random_state=1234)
