@@ -36,7 +36,7 @@ class FCM:
             # check if converged
             if self._is_converged(centroids_old, self.centroids):
                 break
-        return self.membership, self.centroids
+        return self.membership
 
     def centroids_update(self, membership):
         centroids = np.zeros((self.K, self.n_features))
@@ -99,7 +99,7 @@ if __name__ == "__main__":
     print(clusters)
 
     c = FCM(K=3, max_iters=300)
-    memb_matrix, centroids = c.predict(X)
+    memb_matrix= c.predict(X)
 
     accuracy = accuracy(y, memb_matrix)
     print(accuracy)
