@@ -33,7 +33,7 @@ The wavelet decomposition is written as a class: `Wavelet_de_noising(signal, plo
     ###### Arguments
     `wavelet` - name of Wavelet function that is used for decomposition. Default `wavelet='db18'`<br/>
     `level` - level of decomposition. At each level, the signal is decomposed again into the same<br/>
-    functions. Default `wavelet='db18'`<br/>
+    functions. Default `wavelet=1`<br/>
 
 2. `get_wavelets` - additional method to get the names of all available wavelet functions<br/>
    (out of 127)
@@ -78,3 +78,8 @@ The TSK is written as a class: `TakagiSugeno(cluster_n, lr, n_iters)`.<br/>
               Default `cluster_n=2`<br/>
 `lr`- Learning rate. Default `lr=0.01'`<br/>   
 `n_iters`- Maximum number of iterations. Default `n_iters=1500'`<br/> 
+#### Methods
+1. `predict(X)`
+    ###### Arguments
+    `X` - Dataset or variable for clustering. Better to use nupy array. <br/>
+    Method returns membership matrix as output.<br/>
